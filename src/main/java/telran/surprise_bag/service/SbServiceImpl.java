@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -72,6 +73,7 @@ public class SbServiceImpl implements ISbService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<SurprisebagResponseDto> updateSurpriseBag(UUID farmerId, UUID bagId,
 			@Valid SurprisebagEditDto dto) {
 
@@ -80,10 +82,11 @@ public class SbServiceImpl implements ISbService {
 		SurpriseBag sb = sbRepository.findById(bagId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, SURPRISE_BAG_NOT_FOUND));
 
-		if (!sb.getFarmerId().equals(farmerId)) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-					"You are not allowed to update this Surprise Bag");
-		}
+
+	    if (!sb.getFarmerId().equals(farmerId)) {
+	        log.warn("Access denied. Farmer {} tried to update bag owned by {}", farmerId, sb.getFarmerId());
+	        throw new AccessDeniedException("You can update only your own surprise bags");
+	    }
 
 		if (dto.getAvailableCount() != 0) {
 			sb.setAvailableCount(dto.getAvailableCount());
@@ -103,12 +106,17 @@ public class SbServiceImpl implements ISbService {
 	}
 
 	@Override
-	public void deleteSurpriseBag(UUID bagId) {
-		if (!sbRepository.existsById(bagId)) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, SURPRISE_BAG_NOT_FOUND + bagId);
-		}
-		sbRepository.deleteById(bagId);
-		log.info("SurpriseBag {} deleted", bagId);
+	public void deleteSurpriseBag(UUID bagId, UUID farmerId) {
+		 SurpriseBag bag = sbRepository.findById(bagId)
+			        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Surprise bag not found"));
+
+			    if (!bag.getFarmerId().equals(farmerId)) {
+			        log.warn("Access denied. Farmer {} tried to delete bag owned by {}", farmerId, bag.getFarmerId());
+			        throw new AccessDeniedException("You can delete only your own surprise bags");
+			    }
+
+			    sbRepository.delete(bag);
+			    log.info("Surprise bag {} deleted by farmer {}", bagId, farmerId);
 	}
 //************************************************************************************
 	@Override

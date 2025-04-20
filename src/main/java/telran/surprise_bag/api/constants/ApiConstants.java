@@ -40,20 +40,20 @@ public interface ApiConstants {
 	
 	//SURPRISE_BAG
 	
-	String ADD_SURPRISE_BAG = "/surprise_bag";
-	String GET_ALL_SURPRISE_BAGS = "/surprise_bag/all"; 
-	String GET_ALL_SURPRISE_BAGS_FOR_FARMER = "/surprise_bag/farmer";
+	String ADD_SURPRISE_BAG = "/surprise-bag";
+	String GET_ALL_SURPRISE_BAGS = "/surprise-bag/all"; 
+	String GET_ALL_SURPRISE_BAGS_FOR_FARMER = "/surprise-bag/farmer";
 	
     
-    String GET_ALL_SURPRISE_BAGS_BY_SIZE = "/surprise_bag/size";
-    String GET_ALL_SURPRISE_BAGS_BY_CATEGORY = "/surprise_bag/category";
-    String DELETE_SURPRISE_BAG = "/surprise_bag"; 
+    String GET_ALL_SURPRISE_BAGS_BY_SIZE = "/surprise-bag/size";
+    String GET_ALL_SURPRISE_BAGS_BY_CATEGORY = "/surprise-bag/category";
+    String DELETE_SURPRISE_BAG = "/surprise-bag"; 
+      String UPDATE_SURPRISE_BAG = "/surprise-bag/update"; 
     
+    String GET_SURPRISE_BAG_BY_ID = "/internal/surprise-bags/{id}";
+    String SURPRISE_BAG_INC = "/internal/surprise-bags/increment/{id}";
+    String SURPRISE_BAG_DEC = "/internal/surprise-bags/decrement/{id}";
     
-    String GET_SURPRISE_BAG_BY_ID = "/surprise_bag/{id}";
-    String SURPRISE_BAG_INC = "/surprise_bag/{id}/increment";
-    String SURPRISE_BAG_DEC = "/surprise_bag/{id}/decrement";
-    String UPDATE_SURPRISE_BAG = "/surprise_bag/update"; 
     
 
     String GET_CATEGORIES = "/categories";

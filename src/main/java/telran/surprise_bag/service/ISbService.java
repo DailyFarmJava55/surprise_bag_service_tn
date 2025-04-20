@@ -23,7 +23,7 @@ public interface ISbService {
 	ResponseEntity<SurprisebagResponseDto> updateSurpriseBag(UUID farmerId, UUID bagId,
 			@Valid SurprisebagEditDto surpriseBagEditDto);
 
-	void deleteSurpriseBag(UUID bagId);
+	void deleteSurpriseBag(UUID bagId, UUID farmerId);
 
 	SurprisebagResponseDto getById(UUID id);
 
